@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EverQuote.Interfaces;
+using System;
+using System.Collections.Generic;
 
 namespace EverQuote
 {
@@ -8,17 +10,17 @@ namespace EverQuote
         {
         }
 
-        public void RedirectToAgent(Consumer consumer, Agent agent)
+        public void RedirectToAgent(Consumer consumer, IAgent agent)
         {
             throw new NotImplementedException();
         }
 
-        public Agent SelectMatchingAgent(Consumer consumer, IEquatable<Agent> agents)
+        public Agent SelectMatchingAgent(Consumer consumer, IEnumerable<IAgent> agents)
         {
             throw new NotImplementedException();
         }
 
-        public Agent SelectMostFreeAgent(IEquatable<Agent> agents)
+        public Agent SelectMostFreeAgent(IEnumerable<IAgent> agents)
         {
             throw new NotImplementedException();
         }
