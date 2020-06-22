@@ -33,17 +33,20 @@ namespace EverQuote
 
         public bool IsBusy()
         {
-            throw new NotImplementedException();
+            Random gen = new Random();
+            int prob = gen.Next(100);
+            return prob <= 80;
         }
 
         public void Call(ICallCenter callCenter)
         {
-            throw new NotImplementedException();
+            callCenter.ReeciveCall(this);
         }
 
         public bool ReceiveCall()
         {
-            throw new NotImplementedException();
+            this.IsHandeled = this.IsBusy();
+            return this.IsHandeled;
         }
     }
 }
