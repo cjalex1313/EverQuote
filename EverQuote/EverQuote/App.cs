@@ -10,7 +10,7 @@ namespace EverQuote
 
         public App()
         {
-            _callCenter = new CallCenter();
+            _callCenter = new CallCenter(null, null);
         }
 
         public void GenerateConsumers()
