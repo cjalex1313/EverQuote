@@ -1,9 +1,10 @@
-﻿using System;
+﻿using EverQuote.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace EverQuote
 {
-    public class Agent
+    public class Agent : IAgent
     {
         private readonly AgentMaching _agentMaching;
         private readonly Queue<Consumer> _onHoldQueue;
