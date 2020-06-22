@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EverQuote.Interfaces;
+using System;
 
 namespace EverQuote
 {
@@ -35,7 +36,7 @@ namespace EverQuote
             throw new NotImplementedException();
         }
 
-        public void Call(CallCenter callCenter)
+        public void Call(ICallCenter callCenter)
         {
             throw new NotImplementedException();
         }
