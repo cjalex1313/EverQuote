@@ -13,6 +13,10 @@ namespace EverQuote
         private readonly Guid _phone;
 
         public bool IsHandeled { get; set; }
+        public Guid Phone { get
+            {
+                return _phone;
+            } }
 
         public Consumer(int age, string state, int kidsCount, int carsCount, bool rent, int income, Guid phone)
         {
