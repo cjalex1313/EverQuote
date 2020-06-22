@@ -16,7 +16,11 @@ namespace EverQuote
 
         public Consumer GetNextVoiceMail()
         {
-            throw new NotImplementedException();
+            if(_voiceMailQueue.Count > 0)
+            {
+                return _voiceMailQueue.Dequeue();
+            }
+            return null;
         }
 
         public void Work()
@@ -26,7 +30,10 @@ namespace EverQuote
 
         public void MoveWaitingQueueToVoiceMail()
         {
-            throw new NotImplementedException();
+            while(_onHoldQueue.Count > 0)
+            {
+                _voiceMailQueue.Enqueue(_onHoldQueue.Dequeue());
+            }
         }
     }
 }
