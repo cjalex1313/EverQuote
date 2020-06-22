@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EverQuote
 {
-    public class Router
+    public class Router : IRouter
     {
         public Router()
         {
