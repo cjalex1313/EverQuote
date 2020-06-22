@@ -6,11 +6,11 @@ namespace EverQuote
 {
     public class CallCenter : ICallCenter
     {
-        private readonly List<Agent> _agents;
+        private readonly List<IAgent> _agents;
         private readonly Router _router;
         private readonly Dictionary<Guid, Consumer> _consumers;
 
-        public CallCenter(Router router, List<Agent> agents)
+        public CallCenter(Router router, List<IAgent> agents)
         {
             _agents = agents;
             _router = router;
@@ -22,7 +22,7 @@ namespace EverQuote
             throw new NotImplementedException();
         }
 
-        public void AddAgent(Agent anget)
+        public void AddAgent(IAgent anget)
         {
             throw new NotImplementedException();
         }
