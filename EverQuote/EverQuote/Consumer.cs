@@ -19,6 +19,11 @@ namespace EverQuote
                 return _phone;
             } }
 
+        public int Age { get
+            {
+                return _age;
+            } }
+
         public Consumer(int age, string state, int kidsCount, int carsCount, bool rent, int income, Guid phone)
         {
             this._age = age;
