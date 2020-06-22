@@ -1,9 +1,10 @@
-﻿using System;
+﻿using EverQuote.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace EverQuote
 {
-    public class CallCenter
+    public class CallCenter : ICallCenter
     {
         private readonly List<Agent> _agents;
         private readonly Router _router;
