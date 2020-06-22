@@ -6,7 +6,7 @@ namespace EverQuote.Interfaces
 {
     public interface ICallCenter
     {
-        public void ReeciveCall(Consumer consumer);
+        public void ReceiveCall(Consumer consumer);
         public void AddAgent(Agent anget);
         public Consumer GetConsumer(Guid phoneNumber);
     }

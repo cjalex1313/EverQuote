@@ -17,7 +17,7 @@ namespace EverQuote
             _consumers = new Dictionary<Guid, Consumer>();
         }
 
-        public void ReeciveCall(Consumer consumer)
+        public void ReceiveCall(Consumer consumer)
         {
             throw new NotImplementedException();
         }
