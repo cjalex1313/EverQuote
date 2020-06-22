@@ -10,10 +10,10 @@ namespace EverQuote
         private readonly Router _router;
         private readonly Dictionary<Guid, Consumer> _consumers;
 
-        public CallCenter()
+        public CallCenter(Router router, List<Agent> agents)
         {
-            _agents = new List<Agent>();
-            _router = new Router();
+            _agents = agents;
+            _router = router;
             _consumers = new Dictionary<Guid, Consumer>();
         }
 
