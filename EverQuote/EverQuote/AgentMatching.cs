@@ -2,11 +2,11 @@
 
 namespace EverQuote
 {
-    public class AgentMaching
+    public class AgentMatching
     {
         private readonly int[] _ageInterval;
 
-        public AgentMaching(int[] ageInterval)
+        public AgentMatching(int[] ageInterval)
         {
             this._ageInterval = ageInterval;
         }

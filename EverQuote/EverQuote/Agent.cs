@@ -6,7 +6,7 @@ namespace EverQuote
 {
     public class Agent : IAgent
     {
-        private readonly AgentMaching _agentMaching;
+        private readonly AgentMatching _agentMaching;
         private readonly Queue<Consumer> _onHoldQueue;
         private readonly VoiceMail _voiceMail;
         private CallCenter _callCenter;
@@ -14,7 +14,7 @@ namespace EverQuote
         public IEnumerable<Guid> AnsweredCalls { get; set; }
         public Dictionary<Guid, int> SentCalls { get; set; }
 
-        public Agent(AgentMaching agentMaching)
+        public Agent(AgentMatching agentMaching)
         {
             this._agentMaching = agentMaching;
             this._onHoldQueue = new Queue<Consumer>();
