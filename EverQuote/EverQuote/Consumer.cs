@@ -40,7 +40,7 @@ namespace EverQuote
 
         public void Call(ICallCenter callCenter)
         {
-            callCenter.ReeciveCall(this);
+            callCenter.ReceiveCall(this);
         }
 
         public bool ReceiveCall()
