@@ -1,6 +1,7 @@
 ﻿using EverQuote.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EverQuote
 {
@@ -12,17 +13,24 @@ namespace EverQuote
 
         public void RedirectToAgent(Consumer consumer, IAgent agent)
         {
-            throw new NotImplementedException();
+            agent.ReceiveCall(consumer);
         }
 
-        public Agent SelectMatchingAgent(Consumer consumer, IEnumerable<IAgent> agents)
+        public IAgent SelectMatchingAgent(Consumer consumer, IEnumerable<IAgent> agents)
         {
-            throw new NotImplementedException();
+            var matchingAgents = agents.Where(r => r.IsMatching(consumer)).ToList();
+            if(matchingAgents == null || matchingAgents.Count == 0)
+            {
+                matchingAgents = agents.ToList();
+            }
+            var selected = this.SelectMostFreeAgent(matchingAgents);
+            return selected;
         }
 
-        public Agent SelectMostFreeAgent(IEnumerable<IAgent> agents)
+        public IAgent SelectMostFreeAgent(IEnumerable<IAgent> agents)
         {
-            throw new NotImplementedException();
+            var result = agents.OrderBy(r => r.GetVoiceMailSize()).FirstOrDefault();
+            return result;
         }
     }
 }
