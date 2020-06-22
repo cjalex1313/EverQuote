@@ -28,7 +28,10 @@ namespace Testing
             Consumer consumer = new Consumer(16, "Ro", 0, 0, false, 0, Guid.NewGuid());
 
             //act
-            consumer.ReceiveCall();
+            while (!consumer.IsHandeled)
+            {
+                consumer.ReceiveCall();
+            }
 
             //assert
             Assert.True(consumer.IsHandeled);
