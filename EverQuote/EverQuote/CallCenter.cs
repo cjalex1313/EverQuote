@@ -19,17 +19,26 @@ namespace EverQuote
 
         public void ReceiveCall(Consumer consumer)
         {
-            throw new NotImplementedException();
+            if (!this._consumers.ContainsKey(consumer.Phone))
+            {
+                this._consumers.Add(consumer.Phone, consumer);
+            }
+            var selectedAgent = _router.SelectMatchingAgent(consumer, this._agents);
+            _router.RedirectToAgent(consumer, selectedAgent);
         }
 
-        public void AddAgent(IAgent anget)
+        public void AddAgent(IAgent agent)
         {
-            throw new NotImplementedException();
+            this._agents.Add(agent);
         }
 
         public Consumer GetConsumer(Guid phoneNumber)
         {
-            throw new NotImplementedException();
+            if (this._consumers.ContainsKey(phoneNumber))
+            {
+                return this._consumers[phoneNumber];
+            }
+            return null;
         }
 
     }
