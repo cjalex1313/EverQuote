@@ -13,7 +13,15 @@ namespace EverQuote
 
         public bool IsMatching(Consumer consumer)
         {
-            throw new NotImplementedException();
+            if(this._ageInterval.Length != 2)
+            {
+                return false;
+            }
+            if(this._ageInterval[0] > this._ageInterval[1])
+            {
+                return false;
+            }
+            return (this._ageInterval[0] <= consumer.Age && this._ageInterval[1] >= consumer.Age);
         }
     }
 }
