@@ -48,8 +48,7 @@ namespace Testing
             //assert
             var consumerInCenter = mockCenter.Object.GetConsumer(consumer.Phone);
             Assert.Equal(consumerInCenter, consumer);
+            mockCenter.Verify(x => x.GetConsumer(consumer.Phone), Times.Exactly(1));
         }
-
-
     }
 }
