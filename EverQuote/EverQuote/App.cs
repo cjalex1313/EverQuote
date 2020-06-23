@@ -14,7 +14,6 @@ namespace EverQuote
         private readonly CallCenter _callCenter;
         private readonly List<Consumer> _consumers;
         private readonly List<IAgent> _agents;
-        public static bool IsDone = false;
         public List<string> States = new List<string>() { "RO", "US" };
 
         public App()
@@ -62,11 +61,11 @@ namespace EverQuote
         private void GenerateAgentTotalVoiceMails()
         {
             var builder = new StringBuilder();
-            builder.AppendLine("AgentNumber,TotalVoiceMails");
+            builder.AppendLine("AgentNumber,TotalVoiceMails,TotalCallsAnswered");
             int i = 1;
             foreach (var agent in _agents)
             {
-                builder.AppendLine($"{i},{agent.TotalVoiceMails}");
+                builder.AppendLine($"{i},{agent.TotalVoiceMails},{agent.CallsReceived}");
             }
             var filePath = "agentsTotalVoiceMails.csv";
             File.WriteAllText(filePath, builder.ToString());
