@@ -9,9 +9,14 @@ namespace EverQuote
         private Queue<Consumer> _onHoldQueue;
         private readonly Queue<Consumer> _voiceMailQueue;
 
+        public int TotalVoiceMails { get; set; }
+
+        public bool ShouldWork { get; set; } = true;
+
         public VoiceMail(Queue<Consumer> onHoldQueue)
         {
             _onHoldQueue = onHoldQueue;
+            this.TotalVoiceMails = 0;
             _voiceMailQueue = new Queue<Consumer>();
         }
 
@@ -31,7 +36,7 @@ namespace EverQuote
 
         public void Work()
         {
-            while (!App.IsDone)
+            while (ShouldWork)
             {
                 Thread.Sleep(500);
                 while(this._onHoldQueue.Count > 0)
@@ -47,6 +52,7 @@ namespace EverQuote
                     }
                     else
                     {
+                        this.TotalVoiceMails++;
                         _voiceMailQueue.Enqueue(hangingConsumer);
                     }
                 }
