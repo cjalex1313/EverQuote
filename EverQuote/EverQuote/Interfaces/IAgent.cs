@@ -14,5 +14,8 @@ namespace EverQuote.Interfaces
         bool IsMatching(Consumer consumer);
         void Answer(Consumer consumer);
         void Work();
+        void Stop();
+        string ToReportLine();
+        int TotalVoiceMails { get; }
     }
 }
