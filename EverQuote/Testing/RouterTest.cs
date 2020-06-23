@@ -16,13 +16,13 @@ namespace Testing
             //arrange
             Consumer consumer = new Consumer(16, "Ro", 0, 0, false, 0, Guid.NewGuid());
             var agent1 = new Mock<IAgent>();
-            agent1.Setup(x => x.GetVoiceMailSize()).Returns(2);
+            agent1.Setup(x => x.GetOnHoldCount()).Returns(2);
             agent1.Setup(x => x.IsMatching(consumer)).Returns(false);
             var agent2 = new Mock<IAgent>();
-            agent2.Setup(x => x.GetVoiceMailSize()).Returns(4);
+            agent2.Setup(x => x.GetOnHoldCount()).Returns(4);
             agent2.Setup(x => x.IsMatching(consumer)).Returns(true);
             var agent3 = new Mock<IAgent>();
-            agent3.Setup(x => x.GetVoiceMailSize()).Returns(6);
+            agent3.Setup(x => x.GetOnHoldCount()).Returns(6);
             agent3.Setup(x => x.IsMatching(consumer)).Returns(true);
             var router = new Router();
             //act
@@ -38,9 +38,9 @@ namespace Testing
         {
             //arrange
             var agent1 =  new Mock<IAgent>();
-            agent1.Setup(x => x.GetVoiceMailSize()).Returns(2);
+            agent1.Setup(x => x.GetOnHoldCount()).Returns(2);
             var agent2 = new Mock<IAgent>();
-            agent2.Setup(x => x.GetVoiceMailSize()).Returns(4);
+            agent2.Setup(x => x.GetOnHoldCount()).Returns(4);
             var router = new Router();
 
             //act
