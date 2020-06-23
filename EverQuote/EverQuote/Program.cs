@@ -12,6 +12,7 @@ namespace EverQuote
             app.GenerateConsumers();
             app.GenerateAgents();
             app.StartSimulation();
+            app.SubmitReport();
         }
     }
 }
