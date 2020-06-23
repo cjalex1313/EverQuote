@@ -13,7 +13,7 @@ namespace Testing
         {
             //arrange
             Consumer consumer = new Consumer(16, "Ro", 0, 0, false, 0, Guid.NewGuid());
-            var agent = new Agent(new AgentMatching(new int[] { 10, 20 }));
+            var agent = new Agent(new AgentMatching(new int[] { 10, 20 }, "Ro", 0,0,false,new int[] { 0, 100 }));
             //act
             agent.ReceiveCall(consumer);
 
@@ -26,7 +26,7 @@ namespace Testing
         {
             //arrage
             Consumer consumer = new Consumer(16, "Ro", 0, 0, false, 0, Guid.NewGuid());
-            var agent = new Agent(new AgentMatching(new int[] { 10, 20 }));
+            var agent = new Agent(new AgentMatching(new int[] { 10, 20 },"Ro", 0,0,false, new int[] { 0, 100 }));
             agent.ReceiveCall(consumer);
             //act
             while (!consumer.IsHandeled)
