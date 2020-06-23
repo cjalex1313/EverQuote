@@ -24,6 +24,43 @@ namespace EverQuote
                 return _age;
             } }
 
+        public string State { get
+            {
+                return _state;
+            } }
+
+        public int Kids { get
+            {
+                return _kidsCount;
+            } }
+
+        public int Cars
+        {
+            get
+            {
+                return _carsCount;
+            }
+        }
+
+        public bool Rent
+        {
+            get
+            {
+                return _rent;
+            }
+        }
+
+        public int Income
+        {
+            get
+            {
+                return _income;
+            }
+        }
+
+        public int TotalTimesCalled { get; set; }
+
+
         public Consumer(int age, string state, int kidsCount, int carsCount, bool rent, int income, Guid phone)
         {
             this._age = age;
@@ -34,6 +71,7 @@ namespace EverQuote
             this._income = income;
             this._phone = phone;
             this.IsHandeled = false;
+            this.TotalTimesCalled = 0;
         }
 
         public bool IsBusy()
