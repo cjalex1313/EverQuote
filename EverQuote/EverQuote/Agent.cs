@@ -13,6 +13,7 @@ namespace EverQuote
         private bool _continueWork = true;
         private CallCenter _callCenter;
         private ManualResetEvent _mre = new ManualResetEvent(false);
+        public int CallsReceived { get; set; } = 0;
 
         public IEnumerable<Guid> AnsweredCalls { get; set; }
         public Dictionary<Guid, int> SentCalls { get; set; }
@@ -88,6 +89,7 @@ namespace EverQuote
             Random r = new Random();
             int wait = r.Next(50, 300); //for ints
             Thread.Sleep(wait);
+            this.CallsReceived++;
             consumer.IsHandeled = true;
         }
 
@@ -123,7 +125,6 @@ namespace EverQuote
                     this.CallConsumer(nextVoiceMail);
                     nextVoiceMail = _voiceMail.GetNextVoiceMail();
                 }
-                
             }
         }
 

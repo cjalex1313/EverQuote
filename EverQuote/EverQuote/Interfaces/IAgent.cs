@@ -17,5 +17,6 @@ namespace EverQuote.Interfaces
         void Stop();
         string ToReportLine();
         int TotalVoiceMails { get; }
+        int CallsReceived { get; set; }
     }
 }
