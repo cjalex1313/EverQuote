@@ -1,6 +1,7 @@
 ﻿using EverQuote.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace EverQuote
 {
@@ -14,6 +15,11 @@ namespace EverQuote
         public IEnumerable<Guid> AnsweredCalls { get; set; }
         public Dictionary<Guid, int> SentCalls { get; set; }
 
+        public Queue<Consumer> OnHoldQueue { get
+            {
+                return _onHoldQueue;
+            } }
+
         public Agent(AgentMatching agentMaching)
         {
             this._agentMaching = agentMaching;
@@ -25,42 +31,84 @@ namespace EverQuote
 
         public void SetCallCenter(CallCenter center)
         {
-            throw new NotImplementedException();
+            this._callCenter = center;
         }
 
         public void ReceiveCall(Consumer consumer)
         {
-            throw new NotImplementedException();
+            this._onHoldQueue.Enqueue(consumer);
         }
 
         public void CallConsumer(Consumer consumer)
         {
-            throw new NotImplementedException();
+            consumer.IsHandeled = !consumer.IsBusy();
+            if (!consumer.IsHandeled)
+            {
+                this._voiceMail.AddToVoiceMail(consumer);
+            }
+            else
+            {
+                Random r = new Random();
+                int wait = r.Next(50, 300); //for ints
+                Thread.Sleep(wait);
+            }
         }
 
         public void CheckVoiceMail()
         {
-            throw new NotImplementedException();
-        }
-
-        public int GetVoiceMailSize()
-        {
-            throw new NotImplementedException();
+            var voiceMailConsumer = _voiceMail.GetNextVoiceMail();
+            if(voiceMailConsumer != null)
+            {
+                this.CallConsumer(voiceMailConsumer);
+            }
         }
 
         public bool IsMatching(Consumer consumer)
         {
-            throw new NotImplementedException();
+            return this._agentMaching.IsMatching(consumer);
         }
 
         public void Answer(Consumer consumer)
         {
-            throw new NotImplementedException();
+            Random r = new Random();
+            int wait = r.Next(50, 300); //for ints
+            Thread.Sleep(wait);
+            consumer.IsHandeled = true;
         }
 
         public void Work()
         {
-            throw new NotImplementedException();
+            while (!App.IsDone)
+            {
+                while(_onHoldQueue.Count > 0)
+                {
+                    Consumer next = null;
+                    lock (_onHoldQueue)
+                    {
+                        _onHoldQueue.TryDequeue(out next);
+                    }
+                    if(next == null)
+                    {
+                        continue;
+                    }
+                    this.Answer(next);
+                }
+
+                Consumer nextVoiceMail = _voiceMail.GetNextVoiceMail();
+                while(nextVoiceMail != null)
+                {
+                    this.CallConsumer(nextVoiceMail);
+                    nextVoiceMail = _voiceMail.GetNextVoiceMail();
+                }
+            }
+        }
+
+        public int GetOnHoldCount()
+        {
+            lock (this._onHoldQueue)
+            {
+                return this._onHoldQueue.Count;
+            }
         }
     }
 }
