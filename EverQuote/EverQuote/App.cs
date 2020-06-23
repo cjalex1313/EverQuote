@@ -1,7 +1,10 @@
 ﻿using EverQuote.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading;
+
 
 namespace EverQuote
 {
@@ -27,6 +30,7 @@ namespace EverQuote
             for(int i = 0; i< 1000; i++)
             {
                 var newConsumer = new Consumer(r.Next(1, 100), "Ro", r.Next(5), r.Next(5), false, r.Next(1200, 20000), Guid.NewGuid());
+                this._consumers.Add(newConsumer);
             }
         }
 
@@ -34,8 +38,8 @@ namespace EverQuote
         {
             for(int i = 0; i < 20; i++)
             {
-                var lower = i * 5 + 1;
-                var higher = (i + 1) * 5;
+                var lower = i / 2 * 10 + 1;
+                var higher = (i / 2 + 1) * 10;
                 var agenMatching = new AgentMatching(new int[] { lower, higher });
                 var agent = new Agent(agenMatching);
                 _agents.Add(agent);
@@ -49,7 +53,37 @@ namespace EverQuote
 
         public void StartSimulation()
         {
-            throw new NotSupportedException();
+            var threads = new List<Thread>();
+            foreach(var agent in this._agents)
+            {
+                var thread = new Thread(() =>
+                {
+                    agent.Work();
+                });
+                threads.Add(thread);
+                thread.Start();
+            }
+            var r = new Random();
+            for(int i = 0; i < 10; i++)
+            {
+                for(int j = 0;j<100; j++)
+                {
+                    var currentConsumer = this._consumers[(i * 100) + j];
+
+                    this._callCenter.ReceiveCall(currentConsumer);
+                    Thread.Sleep(r.Next(1, 10));
+                }
+            }
+            while (!this._consumers.TrueForAll(r => r.IsHandeled))
+            {
+                Console.WriteLine("Customers to be handled = " + this._consumers.Where(r => r.IsHandeled == false).Count());
+                Thread.Sleep(100);
+            }
+            App.IsDone = true;
+            foreach(var thread in threads)
+            {
+                thread.Join();
+            }
         }
     }
 }

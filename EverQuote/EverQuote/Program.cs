@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using EverQuote;
 
 namespace EverQuote
 {
@@ -6,7 +8,10 @@ namespace EverQuote
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var app = new EverQuote.App();
+            app.GenerateConsumers();
+            app.GenerateAgents();
+            app.StartSimulation();
         }
     }
 }

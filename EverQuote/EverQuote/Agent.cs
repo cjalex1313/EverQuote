@@ -22,9 +22,15 @@ namespace EverQuote
 
         public Agent(AgentMatching agentMaching)
         {
+            Console.WriteLine("Agent Created");
             this._agentMaching = agentMaching;
             this._onHoldQueue = new Queue<Consumer>();
             this._voiceMail = new VoiceMail(_onHoldQueue);
+            var voiceThread = new Thread(() =>
+            {
+                this._voiceMail.Work();
+            });
+            voiceThread.Start();
             this.AnsweredCalls = new List<Guid>();
             this.SentCalls = new Dictionary<Guid, int>();
         }
@@ -80,6 +86,7 @@ namespace EverQuote
         {
             while (!App.IsDone)
             {
+                
                 while(_onHoldQueue.Count > 0)
                 {
                     Consumer next = null;
