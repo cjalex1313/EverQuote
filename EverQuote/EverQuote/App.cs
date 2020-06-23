@@ -1,6 +1,7 @@
 ﻿using EverQuote.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,6 +15,7 @@ namespace EverQuote
         private readonly List<Consumer> _consumers;
         private readonly List<IAgent> _agents;
         public static bool IsDone = false;
+        public List<string> States = new List<string>() { "RO", "US" };
 
         public App()
         {
@@ -29,18 +31,21 @@ namespace EverQuote
             var r = new Random();
             for(int i = 0; i< 1000; i++)
             {
-                var newConsumer = new Consumer(r.Next(1, 100), "Ro", r.Next(5), r.Next(5), false, r.Next(1200, 20000), Guid.NewGuid());
+                var newConsumer = new Consumer(r.Next(1, 100), this.States[r.Next(0,2)], r.Next(5), r.Next(5), false, r.Next(1200, 20000), Guid.NewGuid());
                 this._consumers.Add(newConsumer);
             }
         }
 
         public void GenerateAgents()
         {
+            var r = new Random();
             for(int i = 0; i < 20; i++)
             {
                 var lower = i / 2 * 10 + 1;
                 var higher = (i / 2 + 1) * 10;
-                var agenMatching = new AgentMatching(new int[] { lower, higher });
+                var lowerIncome = r.Next(1200, 15000);
+                var highIncome = r.Next(lowerIncome, 20000);
+                var agenMatching = new AgentMatching(new int[] { lower, higher }, this.States[r.Next(0, 2)], r.Next(0,6), r.Next(0, 6), r.Next(0,2) == 0, new int[] { lowerIncome, highIncome } );
                 var agent = new Agent(agenMatching);
                 _agents.Add(agent);
             }
@@ -48,7 +53,59 @@ namespace EverQuote
 
         public void SubmitReport()
         {
-            throw new NotImplementedException();
+            GenerateConsumersCSV();
+            GenerateAgentsCSV();
+            GenerateConsumerTotalTimesCalled();
+            GenerateAgentTotalVoiceMails();
+        }
+
+        private void GenerateAgentTotalVoiceMails()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine("AgentNumber,TotalVoiceMails");
+            int i = 1;
+            foreach (var agent in _agents)
+            {
+                builder.AppendLine($"{i},{agent.TotalVoiceMails}");
+            }
+            var filePath = "agentsTotalVoiceMails.csv";
+            File.WriteAllText(filePath, builder.ToString());
+        }
+
+        private void GenerateConsumerTotalTimesCalled()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine("Phone,TotalTime");
+            foreach (var consumer in _consumers)
+            {
+                builder.AppendLine($"{consumer.Phone},{consumer.TotalTimesCalled}");
+            }
+            var filePath = "consumersCalled.csv";
+            File.WriteAllText(filePath, builder.ToString());
+        }
+
+        private void GenerateAgentsCSV()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine("Age,Kids,Cars,Income,State");
+            foreach (var agent in _agents)
+            {
+                builder.AppendLine($"{agent.ToReportLine()}");
+            }
+            var filePath = "agents.csv";
+            File.WriteAllText(filePath, builder.ToString());
+        }
+
+        private void GenerateConsumersCSV()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine("Phone,Age,Kids,Cars,Income,State");
+            foreach (var consumer in _consumers)
+            {
+                builder.AppendLine($"{consumer.Phone},{consumer.Age},{consumer.Kids},{consumer.Cars},{consumer.Income},{consumer.State}");
+            }
+            var filePath = "consumers.csv";
+            File.WriteAllText(filePath, builder.ToString());
         }
 
         public void StartSimulation()
@@ -77,9 +134,12 @@ namespace EverQuote
             while (!this._consumers.TrueForAll(r => r.IsHandeled))
             {
                 Console.WriteLine("Customers to be handled = " + this._consumers.Where(r => r.IsHandeled == false).Count());
-                Thread.Sleep(100);
+                Thread.Sleep(1000);
             }
-            App.IsDone = true;
+            foreach (var agent in _agents)
+            {
+                agent.Stop();
+            }
             foreach(var thread in threads)
             {
                 thread.Join();
