@@ -29,7 +29,7 @@ namespace EverQuote
 
         public IAgent SelectMostFreeAgent(IEnumerable<IAgent> agents)
         {
-            var result = agents.OrderBy(r => r.GetVoiceMailSize()).FirstOrDefault();
+            var result = agents.OrderBy(r => r.GetOnHoldCount()).FirstOrDefault();
             return result;
         }
     }
