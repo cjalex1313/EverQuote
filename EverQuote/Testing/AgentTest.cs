@@ -9,7 +9,7 @@ namespace Testing
     public class AgentTest
     {
         [Fact]
-        public void TestReceiveCall()
+        public void Agent_Has_Consumer_In_Queue_After_Receive_Call()
         {
             //arrange
             Consumer consumer = new Consumer(16, "Ro", 0, 0, false, 0, Guid.NewGuid());
@@ -22,7 +22,7 @@ namespace Testing
         }
 
         [Fact]
-        public void TestCallConsumer()
+        public void Agent_Test_Consumer_Is_Handled_After_Answering()
         {
             //arrage
             Consumer consumer = new Consumer(16, "Ro", 0, 0, false, 0, Guid.NewGuid());

@@ -9,7 +9,7 @@ namespace Testing
     public class VoiceMailTest
     {
         [Fact]
-        public void GetNextConsumerWhenQueueIsEmpty()
+        public void VoiceMail_Next_VoiceMail_Is_Null_When_Queue_Is_Empty()
         {
             //arrange
             var queue = new Queue<Consumer>();
@@ -22,7 +22,7 @@ namespace Testing
         }
 
         [Fact]
-        public void GetNextCustomerWhenQueueNotEmpty()
+        public void VoiceMail_Next_VoiceMail_Is_Consumer_When_Queue_Is_Not_Empty()
         {
             //arrange
             var queue = new Queue<Consumer>();

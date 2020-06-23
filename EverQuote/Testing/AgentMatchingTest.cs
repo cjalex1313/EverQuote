@@ -9,7 +9,7 @@ namespace Testing
     public class AgentMatchingTest
     {
         [Fact]
-        public void TestMatching()
+        public void Agent_Matching_Is_Correct_Based_On_Age()
         {
             //arrange
             Consumer consumer = new Consumer(16, "Ro", 0, 0, false, 0, Guid.NewGuid());

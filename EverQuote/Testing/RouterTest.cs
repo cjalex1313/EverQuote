@@ -11,7 +11,7 @@ namespace Testing
     public class RouterTest
     {
         [Fact]
-        public void TestSelectMatchingAgent()
+        public void Router_Matches_Agent()
         {
             //arrange
             Consumer consumer = new Consumer(16, "Ro", 0, 0, false, 0, Guid.NewGuid());
@@ -34,7 +34,7 @@ namespace Testing
         }
 
         [Fact]
-        public void TestSelectMostFreeAgent()
+        public void Router_Matches_The_Most_Free_Agent()
         {
             //arrange
             var agent1 =  new Mock<IAgent>();
@@ -51,7 +51,7 @@ namespace Testing
         }
 
         [Fact]
-        public void TestRedirectToAgent()
+        public void Router_Makes_Matching_Agent_Receive_A_Call_From_Consumer()
         {
             // arrange
             Consumer consumer = new Consumer(16, "Ro", 0, 0, false, 0, Guid.NewGuid());

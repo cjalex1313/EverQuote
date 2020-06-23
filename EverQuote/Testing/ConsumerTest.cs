@@ -11,7 +11,7 @@ namespace Testing
     public class ConsumerTest
     {
         [Fact]
-        public void TestConsumerIsNotHandled()
+        public void Consumer_Is_Not_Handled_By_Default()
         {
             //arrange
             Consumer consumer = new Consumer(16, "Ro", 0, 0, false, 0, Guid.NewGuid());
@@ -22,7 +22,7 @@ namespace Testing
         }
 
         [Fact]
-        public void TestConsumerIsHandledAfterCall()
+        public void Consumer_Is_Setting_IsHandled_To_True_After_Answering()
         {
             //arrange
             Consumer consumer = new Consumer(16, "Ro", 0, 0, false, 0, Guid.NewGuid());
@@ -38,7 +38,7 @@ namespace Testing
         }
 
         [Fact]
-        public void TestConsumerCalledCallCenter()
+        public void Consumer_Registers_In_Call_Center_After_Calling()
         {
             //arrange
             Consumer consumer = new Consumer(16, "Ro", 0, 0, false, 0, Guid.NewGuid());
