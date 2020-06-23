@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace EverQuote
 {
@@ -14,6 +15,11 @@ namespace EverQuote
             _voiceMailQueue = new Queue<Consumer>();
         }
 
+        public void AddToVoiceMail(Consumer consumer)
+        {
+            _voiceMailQueue.Enqueue(consumer);
+        }
+
         public Consumer GetNextVoiceMail()
         {
             if(_voiceMailQueue.Count > 0)
@@ -25,7 +31,26 @@ namespace EverQuote
 
         public void Work()
         {
-            throw new NotImplementedException();
+            while (!App.IsDone)
+            {
+                Thread.Sleep(500);
+                while(this._onHoldQueue.Count > 0)
+                {
+                    Consumer hangingConsumer = null;
+                    lock (_onHoldQueue)
+                    {
+                        _onHoldQueue.TryDequeue(out hangingConsumer);
+                    }
+                    if (hangingConsumer == null)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        _voiceMailQueue.Enqueue(hangingConsumer);
+                    }
+                }
+            }
         }
 
         public void MoveWaitingQueueToVoiceMail()
