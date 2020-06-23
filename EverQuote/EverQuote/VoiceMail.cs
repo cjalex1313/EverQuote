@@ -8,6 +8,7 @@ namespace EverQuote
     {
         private Queue<Consumer> _onHoldQueue;
         private readonly Queue<Consumer> _voiceMailQueue;
+        private Thread _thread = null;
 
         public int TotalVoiceMails { get; set; }
 
@@ -34,7 +35,25 @@ namespace EverQuote
             return null;
         }
 
-        public void Work()
+        public void StartWorking()
+        {
+            _thread = new Thread(() =>
+            {
+                this.Work();
+            });
+            _thread.Start();
+        }
+        
+        public void StopWorking()
+        {
+            this.ShouldWork = false;
+            if (_thread != null)
+            {
+                _thread.Join();
+            }
+        }
+
+        private void Work()
         {
             while (ShouldWork)
             {

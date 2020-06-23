@@ -13,8 +13,8 @@ namespace EverQuote.Interfaces
         int GetOnHoldCount();
         bool IsMatching(Consumer consumer);
         void Answer(Consumer consumer);
-        void Work();
-        void Stop();
+        void StartWorking();
+        void StopWorking();
         string ToReportLine();
         int TotalVoiceMails { get; }
         int CallsReceived { get; set; }

@@ -109,20 +109,14 @@ namespace EverQuote
 
         public void StartSimulation()
         {
-            var threads = new List<Thread>();
             foreach(var agent in this._agents)
             {
-                var thread = new Thread(() =>
-                {
-                    agent.Work();
-                });
-                threads.Add(thread);
-                thread.Start();
+                agent.StartWorking();
             }
             var r = new Random();
             for(int i = 0; i < 10; i++)
             {
-                for(int j = 0;j<100; j++)
+                for(int j = 0; j < 100; j++)
                 {
                     var currentConsumer = this._consumers[(i * 100) + j];
 
@@ -137,11 +131,7 @@ namespace EverQuote
             }
             foreach (var agent in _agents)
             {
-                agent.Stop();
-            }
-            foreach(var thread in threads)
-            {
-                thread.Join();
+                agent.StopWorking();
             }
         }
     }

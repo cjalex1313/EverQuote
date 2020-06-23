@@ -11,6 +11,7 @@ namespace EverQuote
         private readonly Queue<Consumer> _onHoldQueue;
         private readonly VoiceMail _voiceMail;
         private bool _continueWork = true;
+        private Thread _thread = null;
         private CallCenter _callCenter;
         private ManualResetEvent _mre = new ManualResetEvent(false);
         public int CallsReceived { get; set; } = 0;
@@ -34,11 +35,7 @@ namespace EverQuote
             this._agentMaching = agentMaching;
             this._onHoldQueue = new Queue<Consumer>();
             this._voiceMail = new VoiceMail(_onHoldQueue);
-            var voiceThread = new Thread(() =>
-            {
-                this._voiceMail.Work();
-            });
-            voiceThread.Start();
+            this._voiceMail.StartWorking();
             this.AnsweredCalls = new List<Guid>();
             this.SentCalls = new Dictionary<Guid, int>();
         }
@@ -93,14 +90,24 @@ namespace EverQuote
             consumer.IsHandeled = true;
         }
 
-        public void Stop()
+        public void StartWorking()
+        {
+            _thread = new Thread(() =>
+            {
+                this.Work();
+            });
+            _thread.Start();
+        }
+
+        public void StopWorking()
         {
             _continueWork = false;
             _mre.Set();
-            _voiceMail.ShouldWork = false;
+            _voiceMail.StopWorking();
+            _thread.Join();
         }
 
-        public void Work()
+        private void Work()
         {
             while (_continueWork)
             {
