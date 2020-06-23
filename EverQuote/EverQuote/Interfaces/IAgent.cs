@@ -10,7 +10,7 @@ namespace EverQuote.Interfaces
         void ReceiveCall(Consumer consumer);
         void CallConsumer(Consumer consumer);
         void CheckVoiceMail();
-        int GetVoiceMailSize();
+        int GetOnHoldCount();
         bool IsMatching(Consumer consumer);
         void Answer(Consumer consumer);
         void Work();
