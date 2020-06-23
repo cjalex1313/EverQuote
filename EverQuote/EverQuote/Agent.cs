@@ -10,10 +10,17 @@ namespace EverQuote
         private readonly AgentMatching _agentMaching;
         private readonly Queue<Consumer> _onHoldQueue;
         private readonly VoiceMail _voiceMail;
+        private bool _continueWork = true;
         private CallCenter _callCenter;
+        private ManualResetEvent _mre = new ManualResetEvent(false);
 
         public IEnumerable<Guid> AnsweredCalls { get; set; }
         public Dictionary<Guid, int> SentCalls { get; set; }
+
+        public int TotalVoiceMails { get
+            {
+                return this._voiceMail.TotalVoiceMails;
+            } }
 
         public Queue<Consumer> OnHoldQueue { get
             {
@@ -43,10 +50,12 @@ namespace EverQuote
         public void ReceiveCall(Consumer consumer)
         {
             this._onHoldQueue.Enqueue(consumer);
+            _mre.Set();
         }
 
         public void CallConsumer(Consumer consumer)
         {
+            consumer.TotalTimesCalled++;
             consumer.IsHandeled = !consumer.IsBusy();
             if (!consumer.IsHandeled)
             {
@@ -82,11 +91,18 @@ namespace EverQuote
             consumer.IsHandeled = true;
         }
 
+        public void Stop()
+        {
+            _continueWork = false;
+            _mre.Set();
+            _voiceMail.ShouldWork = false;
+        }
+
         public void Work()
         {
-            while (!App.IsDone)
+            while (_continueWork)
             {
-                
+                _mre.WaitOne();
                 while(_onHoldQueue.Count > 0)
                 {
                     Consumer next = null;
@@ -107,6 +123,7 @@ namespace EverQuote
                     this.CallConsumer(nextVoiceMail);
                     nextVoiceMail = _voiceMail.GetNextVoiceMail();
                 }
+                
             }
         }
 
@@ -116,6 +133,11 @@ namespace EverQuote
             {
                 return this._onHoldQueue.Count;
             }
+        }
+
+        public string ToReportLine()
+        {
+            return this._agentMaching.AgeInterval[0] + "-" + _agentMaching.AgeInterval[1] + "," + _agentMaching.Kids + "," + _agentMaching.Cars + "," + _agentMaching.Income[0] + "-" + _agentMaching.Income[1] + "," + _agentMaching.State;
         }
     }
 }
